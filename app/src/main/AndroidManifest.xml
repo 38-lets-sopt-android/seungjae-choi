@@ -12,7 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LETSSOPT">
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.SignUpActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sign_up"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".presentation.SignInActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sign_in"
+            android:theme="@style/Theme.LETSSOPT" />
+        <activity
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.LETSSOPT">
