@@ -1,5 +1,6 @@
 package com.example.letssopt.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,7 +35,13 @@ class SignUpActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     SignUpRoute(
                         modifier = Modifier.padding(innerPadding),
-                        navigateToSignIn = {}
+                        navigateToSignIn = { email, password ->
+                            val intent = Intent()
+                            intent.putExtra("email", email)
+                            intent.putExtra("password", password)
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        }
                     )
                 }
             }
@@ -44,7 +51,7 @@ class SignUpActivity : ComponentActivity() {
 
 @Composable
 fun SignUpRoute(
-    navigateToSignIn: () -> Unit,
+    navigateToSignIn: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SignUpScreen(
@@ -55,7 +62,7 @@ fun SignUpRoute(
 
 @Composable
 private fun SignUpScreen(
-    onSignUpClick: () -> Unit,
+    onSignUpClick: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var email by remember { mutableStateOf("") }
@@ -117,7 +124,7 @@ private fun SignUpScreen(
 
         SoptBasicButton(
             title = "회원가입",
-            onClick = onSignUpClick,
+            onClick = { onSignUpClick(email, password) },
             enabled = true,
             modifier = Modifier.padding(bottom = 26.dp)
         )
@@ -128,6 +135,8 @@ private fun SignUpScreen(
 @Composable
 fun SignUpScreenPreview() {
     LETSSOPTTheme {
-        SignUpScreen(onSignUpClick = {})
+        SignUpScreen(
+            onSignUpClick = { _, _ -> }
+        )
     }
 }

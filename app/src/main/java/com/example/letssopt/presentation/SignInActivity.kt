@@ -1,10 +1,12 @@
 package com.example.letssopt.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +30,20 @@ import com.example.letssopt.core.designsystem.component.SoptFormField
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 
 class SignInActivity : ComponentActivity() {
+    private var registeredEmail by mutableStateOf("")
+    private var registeredPassword by mutableStateOf("")
+
+    private val signUpLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.let { intent ->
+                registeredEmail = intent.getStringExtra("email") ?: ""
+                registeredPassword = intent.getStringExtra("password") ?: ""
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -36,9 +52,15 @@ class SignInActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     SignInRoute(
                         modifier = Modifier.padding(innerPadding),
-                        navigateToSignUp = {},
+                        navigateToSignUp = {
+                            val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
+                            signUpLauncher.launch(intent)
+                        },
                         navigateToMain = {
                             Toast.makeText(this, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@SignInActivity, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
                         }
                     )
                 }
