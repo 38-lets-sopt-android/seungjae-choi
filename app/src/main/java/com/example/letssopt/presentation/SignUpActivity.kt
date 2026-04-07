@@ -2,6 +2,7 @@ package com.example.letssopt.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,8 +21,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.letssopt.core.common.util.SoptValidator
 import com.example.letssopt.core.designsystem.component.SoptBasicButton
 import com.example.letssopt.core.designsystem.component.SoptFormField
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
@@ -68,6 +71,8 @@ private fun SignUpScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordCheck by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -124,8 +129,15 @@ private fun SignUpScreen(
 
         SoptBasicButton(
             title = "회원가입",
-            onClick = { onSignUpClick(email, password) },
-            enabled = true,
+            onClick = {
+                val errorMessage = SoptValidator.validateSignUpInputs(email, password, passwordCheck)
+                if (errorMessage != null) {
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                } else {
+                    onSignUpClick(email, password)
+                }
+            },
+            enabled = email.isNotBlank() && password.isNotBlank() && passwordCheck.isNotBlank(),
             modifier = Modifier.padding(bottom = 26.dp)
         )
     }

@@ -19,8 +19,8 @@ import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 fun SoptBasicButton(
     title: String,
     onClick: () -> Unit,
-    enabled: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Column(
         modifier = modifier

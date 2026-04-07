@@ -22,9 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.letssopt.core.common.extension.noRippleClickable
+import com.example.letssopt.core.common.util.SoptValidator
 import com.example.letssopt.core.designsystem.component.SoptBasicButton
 import com.example.letssopt.core.designsystem.component.SoptFormField
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
@@ -52,15 +54,18 @@ class SignInActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     SignInRoute(
                         modifier = Modifier.padding(innerPadding),
+                        registeredEmail = registeredEmail,
+                        registeredPassword = registeredPassword,
                         navigateToSignUp = {
                             val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
                             signUpLauncher.launch(intent)
                         },
                         navigateToMain = {
                             Toast.makeText(this, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@SignInActivity, MainActivity::class.java)
+                            val intent = Intent(this@SignInActivity, MainActivity::class.java).apply {
+                                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            }
                             startActivity(intent)
-                            finish()
                         }
                     )
                 }
@@ -71,12 +76,16 @@ class SignInActivity : ComponentActivity() {
 
 @Composable
 fun SignInRoute(
+    registeredEmail: String,
+    registeredPassword: String,
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     SignInScreen(
         modifier = modifier,
+        registeredEmail = registeredEmail,
+        registeredPassword = registeredPassword,
         onSignUpTextClick = navigateToSignUp,
         onSignInClick = navigateToMain
     )
@@ -84,12 +93,16 @@ fun SignInRoute(
 
 @Composable
 private fun SignInScreen(
+    registeredEmail: String,
+    registeredPassword: String,
     onSignUpTextClick: () -> Unit,
     onSignInClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -148,8 +161,19 @@ private fun SignInScreen(
 
         SoptBasicButton(
             title = "로그인하기",
-            onClick = onSignInClick,
-            enabled = true,
+            onClick = {
+                val errorMessage = SoptValidator.validateSignInInputs(email, password)
+
+                if (errorMessage != null) {
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+                else if (email != registeredEmail || password != registeredPassword) {
+                    Toast.makeText(context, "아이디 또는 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    onSignInClick()
+                }
+            },
             modifier = Modifier.padding(bottom = 26.dp)
         )
     }
@@ -160,6 +184,8 @@ private fun SignInScreen(
 fun SignInScreenPreview() {
     LETSSOPTTheme {
         SignInScreen(
+            registeredEmail = "",
+            registeredPassword = "",
             onSignUpTextClick = {},
             onSignInClick = {}
         )
