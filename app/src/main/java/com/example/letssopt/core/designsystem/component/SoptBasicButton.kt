@@ -26,14 +26,21 @@ fun SoptBasicButton(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .background(color = if (enabled) LETSSOPTTheme.colors.primaryRed else LETSSOPTTheme.colors.disabled)
-            .noRippleClickable(onClick = onClick)
+            .background(
+                color = if (enabled) LETSSOPTTheme.colors.primaryRed
+                else LETSSOPTTheme.colors.disabled
+            )
+            .noRippleClickable(
+                enabled = enabled,
+                onClick = onClick
+            )
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = title,
-            color = if (enabled) LETSSOPTTheme.colors.textPrimary else LETSSOPTTheme.colors.placeholder,
+            color = if (enabled) LETSSOPTTheme.colors.textPrimary
+            else LETSSOPTTheme.colors.placeholder,
             style = LETSSOPTTheme.typography.bold.button
         )
     }
