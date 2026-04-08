@@ -188,6 +188,8 @@ private fun SignInScreen(
         SoptBasicButton(
             title = "로그인하기",
             onClick = {
+                focusManager.clearFocus()
+
                 onSignInClick(
                     emailState.text.toString(),
                     passwordState.text.toString()

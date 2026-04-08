@@ -156,6 +156,8 @@ private fun SignUpScreen(
         SoptBasicButton(
             title = "회원가입",
             onClick = {
+                focusManager.clearFocus()
+
                 onSignUpClick(
                     emailState.text.toString(),
                     passwordState.text.toString(),
