@@ -61,7 +61,6 @@ class SignInActivity : ComponentActivity() {
                             signUpLauncher.launch(intent)
                         },
                         navigateToMain = {
-                            Toast.makeText(this, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this@SignInActivity, MainActivity::class.java).apply {
                                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             }
@@ -82,27 +81,36 @@ fun SignInRoute(
     navigateToMain: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     SignInScreen(
         modifier = modifier,
-        registeredEmail = registeredEmail,
-        registeredPassword = registeredPassword,
         onSignUpTextClick = navigateToSignUp,
-        onSignInClick = navigateToMain
+        onSignInClick = { email, password ->
+            val errorMessage = SoptValidator.validateSignInInputs(email, password)
+
+            if (errorMessage != null) {
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+            else if (email != registeredEmail || password != registeredPassword) {
+                Toast.makeText(context, "아이디 또는 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
+                navigateToMain()
+            }
+        }
     )
 }
 
 @Composable
 private fun SignInScreen(
-    registeredEmail: String,
-    registeredPassword: String,
     onSignUpTextClick: () -> Unit,
-    onSignInClick: () -> Unit,
+    onSignInClick: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-
-    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -161,19 +169,7 @@ private fun SignInScreen(
 
         SoptBasicButton(
             title = "로그인하기",
-            onClick = {
-                val errorMessage = SoptValidator.validateSignInInputs(email, password)
-
-                if (errorMessage != null) {
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                }
-                else if (email != registeredEmail || password != registeredPassword) {
-                    Toast.makeText(context, "아이디 또는 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-                }
-                else {
-                    onSignInClick()
-                }
-            },
+            onClick = { onSignInClick(email, password) },
             modifier = Modifier.padding(bottom = 26.dp)
         )
     }
@@ -184,10 +180,8 @@ private fun SignInScreen(
 fun SignInScreenPreview() {
     LETSSOPTTheme {
         SignInScreen(
-            registeredEmail = "",
-            registeredPassword = "",
             onSignUpTextClick = {},
-            onSignInClick = {}
+            onSignInClick = { _, _ -> }
         )
     }
 }

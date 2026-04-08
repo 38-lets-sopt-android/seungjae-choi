@@ -39,9 +39,10 @@ class SignUpActivity : ComponentActivity() {
                     SignUpRoute(
                         modifier = Modifier.padding(innerPadding),
                         navigateToSignIn = { email, password ->
-                            val intent = Intent()
-                            intent.putExtra("email", email)
-                            intent.putExtra("password", password)
+                            val intent = Intent().apply {
+                                putExtra("email", email)
+                                putExtra("password", password)
+                            }
                             setResult(RESULT_OK, intent)
                             finish()
                         }
@@ -57,22 +58,30 @@ fun SignUpRoute(
     navigateToSignIn: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     SignUpScreen(
         modifier = modifier,
-        onSignUpClick = navigateToSignIn
+        onSignUpClick = { email, password, passwordCheck ->
+            val errorMessage = SoptValidator.validateSignUpInputs(email, password, passwordCheck)
+            if (errorMessage != null) {
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                navigateToSignIn(email, password)
+            }
+        }
     )
 }
 
 @Composable
 private fun SignUpScreen(
-    onSignUpClick: (String, String) -> Unit,
+    onSignUpClick: (String, String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordCheck by remember { mutableStateOf("") }
-
-    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -129,14 +138,7 @@ private fun SignUpScreen(
 
         SoptBasicButton(
             title = "회원가입",
-            onClick = {
-                val errorMessage = SoptValidator.validateSignUpInputs(email, password, passwordCheck)
-                if (errorMessage != null) {
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                } else {
-                    onSignUpClick(email, password)
-                }
-            },
+            onClick = { onSignUpClick(email, password, passwordCheck) },
             enabled = email.isNotBlank() && password.isNotBlank() && passwordCheck.isNotBlank(),
             modifier = Modifier.padding(bottom = 26.dp)
         )
@@ -148,7 +150,7 @@ private fun SignUpScreen(
 fun SignUpScreenPreview() {
     LETSSOPTTheme {
         SignUpScreen(
-            onSignUpClick = { _, _ -> }
+            onSignUpClick = { _, _, _ -> }
         )
     }
 }
