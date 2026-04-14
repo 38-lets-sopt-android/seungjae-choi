@@ -67,9 +67,10 @@ fun SignUpRoute(
     SignUpScreen(
         modifier = modifier,
         onSignUpClick = { email, password, passwordCheck ->
-            val errorMessage = SoptValidator.validateSignUpInputs(email, password, passwordCheck)
-            if (errorMessage != null) {
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            val errorType = SoptValidator.validateSignUpInputs(email, password, passwordCheck)
+
+            if (errorType != null) {
+                Toast.makeText(context, errorType.message, Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show()
                 navigateToSignIn(email, password)

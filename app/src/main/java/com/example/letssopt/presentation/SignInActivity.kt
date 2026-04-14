@@ -96,10 +96,10 @@ fun SignInRoute(
         modifier = modifier,
         onSignUpTextClick = navigateToSignUp,
         onSignInClick = { email, password ->
-            val errorMessage = SoptValidator.validateSignInInputs(email, password)
+            val errorType = SoptValidator.validateSignInInputs(email, password)
 
-            if (errorMessage != null) {
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            if (errorType != null) {
+                Toast.makeText(context, errorType.message, Toast.LENGTH_SHORT).show()
             } else if (email != registeredEmail || password != registeredPassword) {
                 Toast.makeText(context, "아이디 또는 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
             } else {
