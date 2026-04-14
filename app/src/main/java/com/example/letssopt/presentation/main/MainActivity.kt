@@ -1,4 +1,4 @@
-package com.example.letssopt.presentation
+package com.example.letssopt.presentation.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
