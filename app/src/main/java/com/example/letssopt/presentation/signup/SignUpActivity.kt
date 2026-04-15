@@ -29,15 +29,18 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.letssopt.core.data.AuthPreference
 import com.example.letssopt.core.designsystem.component.SoptBasicButton
 import com.example.letssopt.core.designsystem.component.SoptFormField
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 
 class SignUpActivity : ComponentActivity() {
-    val viewModel by viewModels<SignUpViewModel>()
+    private val viewModel by viewModels<SignUpViewModel>()
+    private lateinit var authPreference: AuthPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        authPreference = AuthPreference(this)
         enableEdgeToEdge()
         setContent {
             LETSSOPTTheme {
@@ -45,6 +48,7 @@ class SignUpActivity : ComponentActivity() {
                     SignUpRoute(
                         modifier = Modifier.padding(innerPadding),
                         viewModel = viewModel,
+                        authPreference = authPreference,
                         navigateToSignIn = { email, password ->
                             val intent = Intent().apply {
                                 putExtra("email", email)
@@ -63,6 +67,7 @@ class SignUpActivity : ComponentActivity() {
 @Composable
 fun SignUpRoute(
     viewModel: SignUpViewModel,
+    authPreference: AuthPreference,
     navigateToSignIn: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -76,6 +81,7 @@ fun SignUpRoute(
             if (errorMessage != null) {
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             } else {
+                authPreference.saveAccount(email, password)
                 Toast.makeText(context, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show()
                 navigateToSignIn(email, password)
             }

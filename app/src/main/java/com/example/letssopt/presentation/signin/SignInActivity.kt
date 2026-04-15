@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.letssopt.core.common.extension.noRippleClickable
+import com.example.letssopt.core.data.AuthPreference
 import com.example.letssopt.core.designsystem.component.SoptBasicButton
 import com.example.letssopt.core.designsystem.component.SoptFormField
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
@@ -39,22 +39,17 @@ import com.example.letssopt.presentation.signup.SignUpActivity
 
 class SignInActivity : ComponentActivity() {
     private val viewModel by viewModels<SignInViewModel>()
-
-    private val signUpLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            result.data?.let { intent ->
-                val email = intent.getStringExtra("email") ?: ""
-                val password = intent.getStringExtra("password") ?: ""
-
-                viewModel.updateRegisteredInfo(email, password)
-            }
-        }
-    }
+    private lateinit var authPreference: AuthPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        authPreference = AuthPreference(this)
+
+        if (authPreference.isLoggedIn()) {
+            startMainActivity()
+            return
+        }
+
         enableEdgeToEdge()
         setContent {
             LETSSOPTTheme {
@@ -62,28 +57,31 @@ class SignInActivity : ComponentActivity() {
                     SignInRoute(
                         modifier = Modifier.padding(innerPadding),
                         viewModel = viewModel,
+                        authPreference = authPreference,
                         navigateToSignUp = {
                             val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
-                            signUpLauncher.launch(intent)
-                        },
-                        navigateToMain = {
-                            val intent =
-                                Intent(this@SignInActivity, MainActivity::class.java).apply {
-                                    flags =
-                                        Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                }
                             startActivity(intent)
-                        }
+                        },
+                        navigateToMain = { startMainActivity() }
                     )
                 }
             }
         }
+    }
+
+    private fun startMainActivity() {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        finish()
     }
 }
 
 @Composable
 fun SignInRoute(
     viewModel: SignInViewModel,
+    authPreference: AuthPreference,
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
     modifier: Modifier = Modifier,
@@ -94,11 +92,20 @@ fun SignInRoute(
         modifier = modifier,
         onSignUpTextClick = navigateToSignUp,
         onSignInClick = { email, password ->
-            val errorMessage = viewModel.validateSignIn(email, password)
+            val storedEmail = authPreference.getEmail()
+            val storedPassword = authPreference.getPassword()
+
+            val errorMessage = viewModel.validateSignIn(
+                email = email,
+                password = password,
+                storedEmail = storedEmail,
+                storedPassword = storedPassword
+            )
 
             if (errorMessage != null) {
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             } else {
+                authPreference.setLoggedIn(true)
                 Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
                 navigateToMain()}
         }
