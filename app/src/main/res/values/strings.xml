@@ -2,4 +2,11 @@
     <string name="app_name">LETSSOPT</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_main">MainActivity</string>
+
+
+    <string name="tab_main">메인</string>
+    <string name="tab_purchase">개별 구매</string>
+    <string name="tab_webtoon">웹툰</string>
+    <string name="tab_search">찾기</string>
+    <string name="tab_library">보관함</string>
 </resources>
