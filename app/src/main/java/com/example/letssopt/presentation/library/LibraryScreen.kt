@@ -14,11 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.letssopt.R
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.presentation.library.component.LibraryEmptyView
 import com.example.letssopt.presentation.library.component.LibraryVerticalGrid
-import com.example.letssopt.presentation.library.model.LibraryUiModel
 import com.example.letssopt.presentation.library.state.LibraryUiState
 import kotlinx.collections.immutable.toImmutableList
 
@@ -75,12 +73,7 @@ private fun LibraryScreenPreview() {
         LibraryScreen(
             paddingValues = PaddingValues(0.dp),
             uiState = LibraryUiState(
-                items = listOf(
-                    LibraryUiModel(1, R.drawable.img_content1),
-                    LibraryUiModel(2, R.drawable.img_content2),
-                    LibraryUiModel(3, R.drawable.img_content3),
-                    LibraryUiModel(4, R.drawable.img_content1),
-                ).toImmutableList()
+                items = LibraryUiState.dummyItems.toImmutableList()
             ),
             onDeleteClick = {}
         )
