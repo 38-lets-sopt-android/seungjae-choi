@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.letssopt.core.designsystem.component.SoptContentItem
 import com.example.letssopt.presentation.home.component.HomeSectionHeader
 import kotlinx.collections.immutable.ImmutableList
 
@@ -35,7 +36,7 @@ fun HomeContentSection(
             modifier = Modifier.padding(top = 6.dp)
         ) {
             items(items = contentList) {
-                HomeContentItem(imageRes = it)
+                SoptContentItem(imageRes = it)
             }
         }
     }

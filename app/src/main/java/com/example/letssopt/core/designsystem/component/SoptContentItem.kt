@@ -1,4 +1,4 @@
-package com.example.letssopt.presentation.home.component.content
+package com.example.letssopt.core.designsystem.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -18,7 +18,7 @@ import com.example.letssopt.R
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 
 @Composable
-fun HomeContentItem(
+fun SoptContentItem(
     @DrawableRes imageRes: Int,
     modifier: Modifier = Modifier
 ) {
@@ -39,9 +39,9 @@ fun HomeContentItem(
 
 @Preview
 @Composable
-private fun HomeContentItemPreview() {
+private fun SoptContentItemPreview() {
     LETSSOPTTheme {
-        HomeContentItem(
+        SoptContentItem(
             imageRes = R.drawable.img_content1
         )
     }
