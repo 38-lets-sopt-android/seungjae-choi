@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.letssopt.core.designsystem.component.SoptTopBar
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.presentation.home.HomeRoute
-import com.example.letssopt.presentation.library.LibraryScreen
+import com.example.letssopt.presentation.library.LibraryRoute
 import com.example.letssopt.presentation.main.component.MainBottomBar
 import com.example.letssopt.presentation.purchase.PurchaseScreen
 import com.example.letssopt.presentation.search.SearchScreen
@@ -51,7 +51,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             MainTab.PURCHASE -> PurchaseScreen(paddingValues = innerPadding)
             MainTab.WEBTOON -> WebtoonScreen(paddingValues = innerPadding)
             MainTab.SEARCH -> SearchScreen(paddingValues = innerPadding)
-            MainTab.LIBRARY -> LibraryScreen(paddingValues = innerPadding)
+            MainTab.LIBRARY -> LibraryRoute(paddingValues = innerPadding)
         }
     }
 }
