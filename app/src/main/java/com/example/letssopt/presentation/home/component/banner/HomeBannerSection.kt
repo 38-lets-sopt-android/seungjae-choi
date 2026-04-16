@@ -7,11 +7,13 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.presentation.home.component.HomeSectionHeader
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.delay
 
 @Composable
 fun HomeBannerSection(
@@ -24,6 +26,13 @@ fun HomeBannerSection(
         initialPage = startIndex,
         pageCount = { infiniteCount }
     )
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(3000)
+            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+        }
+    }
 
     Column(modifier = modifier) {
         HomeSectionHeader(
