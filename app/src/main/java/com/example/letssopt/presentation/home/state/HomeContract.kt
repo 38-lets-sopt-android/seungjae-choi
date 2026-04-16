@@ -1,10 +1,12 @@
 package com.example.letssopt.presentation.home.state
 
+import androidx.compose.runtime.Immutable
 import com.example.letssopt.R
 import com.example.letssopt.presentation.home.model.PartyUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+@Immutable
 data class HomeUiState(
     val bannerList: ImmutableList<Int> = persistentListOf(),
     val hotList: ImmutableList<Int> = persistentListOf(),
