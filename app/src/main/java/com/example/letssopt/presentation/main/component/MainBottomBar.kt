@@ -49,7 +49,8 @@ fun MainBottomBar(
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                .padding(horizontal = 18.dp, vertical = 11.dp),
+            horizontalArrangement = Arrangement.spacedBy(21.dp)
         ) {
             tabs.forEach { tab ->
                 MainBottomBarTab(
@@ -72,7 +73,7 @@ fun MainBottomBarTab(
 ) {
     Column (
         modifier = modifier
-            .padding(8.dp)
+            .padding(top = 4.dp, bottom = 1.dp)
             .noRippleClickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
