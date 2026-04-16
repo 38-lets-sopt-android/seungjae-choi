@@ -1,6 +1,8 @@
 package com.example.letssopt.presentation.main
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.letssopt.core.designsystem.component.SoptTopBar
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.presentation.home.HomeScreen
 import com.example.letssopt.presentation.library.LibraryScreen
@@ -23,7 +26,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var currentTab by remember { mutableStateOf(MainTab.MAIN) }
 
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
+            .statusBarsPadding(),
         bottomBar = {
             MainBottomBar(
                 isVisible = true,
@@ -31,7 +37,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 currentTab = currentTab,
                 onTabSelected = { currentTab = it }
             )
-        }
+        },
+        topBar = {
+            when (currentTab) {
+                MainTab.MAIN -> SoptTopBar()
+                else -> {}
+            }
+        },
+
     ) { innerPadding ->
         when (currentTab) {
             MainTab.MAIN -> HomeScreen(paddingValues = innerPadding)
@@ -45,7 +58,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun MainScreenPreview() {
+private fun MainScreenPreview() {
     LETSSOPTTheme {
         MainScreen()
     }
