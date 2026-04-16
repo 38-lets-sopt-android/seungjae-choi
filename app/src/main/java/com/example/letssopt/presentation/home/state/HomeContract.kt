@@ -14,8 +14,8 @@ data class HomeUiState(
     companion object {
         val dummyBannerList = listOf(
             R.drawable.img_banner,
-            R.drawable.img_banner,
-            R.drawable.img_banner,
+            R.drawable.img_content1,
+            R.drawable.img_content2,
         )
         val dummyContentList = listOf(
             R.drawable.img_content1,
