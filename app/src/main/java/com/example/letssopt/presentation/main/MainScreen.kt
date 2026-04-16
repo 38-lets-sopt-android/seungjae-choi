@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.letssopt.core.designsystem.component.SoptTopBar
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.presentation.home.HomeScreen
+import com.example.letssopt.presentation.home.HomeRoute
 import com.example.letssopt.presentation.library.LibraryScreen
 import com.example.letssopt.presentation.main.component.MainBottomBar
 import com.example.letssopt.presentation.purchase.PurchaseScreen
@@ -47,7 +47,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
     ) { innerPadding ->
         when (currentTab) {
-            MainTab.MAIN -> HomeScreen(paddingValues = innerPadding)
+            MainTab.MAIN -> HomeRoute(paddingValues = innerPadding)
             MainTab.PURCHASE -> PurchaseScreen(paddingValues = innerPadding)
             MainTab.WEBTOON -> WebtoonScreen(paddingValues = innerPadding)
             MainTab.SEARCH -> SearchScreen(paddingValues = innerPadding)
