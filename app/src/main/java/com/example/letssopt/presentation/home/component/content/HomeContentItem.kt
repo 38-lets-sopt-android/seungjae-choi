@@ -1,11 +1,11 @@
-package com.example.letssopt.presentation.home.component
+package com.example.letssopt.presentation.home.component.content
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,14 +18,14 @@ import com.example.letssopt.R
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 
 @Composable
-fun HomeBannerItem(
+fun HomeContentItem(
     @DrawableRes imageRes: Int,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth()
-            .aspectRatio(16f / 9f)
+            .width(100.dp)
+            .aspectRatio(2f / 3f)
             .clip(RoundedCornerShape(10.dp))
     ) {
         Image(
@@ -39,10 +39,10 @@ fun HomeBannerItem(
 
 @Preview
 @Composable
-private fun HomeBannerItemPreview() {
+private fun HomeContentItemPreview() {
     LETSSOPTTheme {
-        HomeBannerItem(
-            imageRes = R.drawable.img_banner
+        HomeContentItem(
+            imageRes = R.drawable.img_content1
         )
     }
 }
