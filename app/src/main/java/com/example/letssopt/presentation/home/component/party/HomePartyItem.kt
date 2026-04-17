@@ -31,12 +31,10 @@ fun HomePartyItem(
     item: PartyUiModel,
     modifier: Modifier = Modifier
 ) {
-    Box(
-
-    ) {
+    Box(modifier = modifier.width(196.dp)) {
         Column(
-            modifier = modifier
-                .width(196.dp)
+            modifier = Modifier
+                .fillMaxWidth()
                 .background(LETSSOPTTheme.colors.surface)
         ) {
             Image(
