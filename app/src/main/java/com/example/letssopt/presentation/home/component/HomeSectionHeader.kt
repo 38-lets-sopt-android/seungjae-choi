@@ -16,11 +16,11 @@ import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 
 @Composable
 fun HomeSectionHeader(
-    title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
     showMore: Boolean = false,
-    onMoreClick: () -> Unit = {}
+    onMoreClick: () -> Unit = {},
+    title: @Composable () -> Unit
 ) {
     Row(
         modifier = modifier

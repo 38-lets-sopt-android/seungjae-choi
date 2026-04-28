@@ -39,13 +39,11 @@ import com.example.letssopt.presentation.signup.SignUpActivity
 
 class SignInActivity : ComponentActivity() {
     private val viewModel by viewModels<SignInViewModel>()
-    private lateinit var authPreference: AuthPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authPreference = AuthPreference(this)
 
-        if (authPreference.isLoggedIn()) {
+        if (AuthPreference.isLoggedIn()) {
             startMainActivity()
             return
         }
@@ -57,7 +55,6 @@ class SignInActivity : ComponentActivity() {
                     SignInRoute(
                         modifier = Modifier.padding(innerPadding),
                         viewModel = viewModel,
-                        authPreference = authPreference,
                         navigateToSignUp = {
                             val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
                             startActivity(intent)
@@ -81,7 +78,6 @@ class SignInActivity : ComponentActivity() {
 @Composable
 fun SignInRoute(
     viewModel: SignInViewModel,
-    authPreference: AuthPreference,
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
     modifier: Modifier = Modifier,
@@ -92,8 +88,8 @@ fun SignInRoute(
         modifier = modifier,
         onSignUpTextClick = navigateToSignUp,
         onSignInClick = { email, password ->
-            val storedEmail = authPreference.getEmail()
-            val storedPassword = authPreference.getPassword()
+            val storedEmail = AuthPreference.getEmail()
+            val storedPassword = AuthPreference.getPassword()
 
             val errorMessage = viewModel.validateSignIn(
                 email = email,
@@ -105,7 +101,7 @@ fun SignInRoute(
             if (errorMessage != null) {
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             } else {
-                authPreference.setLoggedIn(true)
+                AuthPreference.setLoggedIn(true)
                 Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
                 navigateToMain()}
         }

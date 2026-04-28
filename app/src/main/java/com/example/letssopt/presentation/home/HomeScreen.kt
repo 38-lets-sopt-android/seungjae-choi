@@ -1,5 +1,6 @@
 package com.example.letssopt.presentation.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -53,31 +54,29 @@ fun HomeScreen(
         // 왓고리즘
         item {
             HomeContentSection(
-                title = {
-                    androidx.compose.foundation.Image(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_watgorizm),
-                        contentDescription = "왓고리즘"
-                    )
-                },
                 subtitle = "예능부터 드라마까지!",
                 contentList = uiState.hotList,
                 showMore = true
-            )
+            ) {
+                Image(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_watgorizm),
+                    contentDescription = "왓고리즘"
+                )
+            }
         }
 
         // 공개 예정 콘텐츠
         item {
             HomeContentSection(
-                title = {
-                    Text(
-                        text = "공개 예정 콘텐츠",
-                        style = LETSSOPTTheme.typography.bold.h2,
-                        color = LETSSOPTTheme.colors.textPrimary
-                    )
-                },
                 contentList = uiState.upcomingList,
                 showMore = true
-            )
+            ) {
+                Text(
+                    text = "공개 예정 콘텐츠",
+                    style = LETSSOPTTheme.typography.bold.h2,
+                    color = LETSSOPTTheme.colors.textPrimary
+                )
+            }
         }
 
         // 왓챠 파티
