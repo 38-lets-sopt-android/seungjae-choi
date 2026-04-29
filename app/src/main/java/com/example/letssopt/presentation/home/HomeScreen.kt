@@ -26,6 +26,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun HomeRoute(
     paddingValues: PaddingValues,
+    navigateUp: () -> Unit,
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -37,7 +38,7 @@ fun HomeRoute(
 }
 
 @Composable
-fun HomeScreen(
+private fun HomeScreen(
     paddingValues: PaddingValues,
     uiState: HomeUiState
 ) {

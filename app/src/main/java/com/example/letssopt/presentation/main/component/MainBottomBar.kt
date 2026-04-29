@@ -65,7 +65,7 @@ fun MainBottomBar(
 }
 
 @Composable
-fun MainBottomBarTab(
+private fun MainBottomBarTab(
     tab: MainTab,
     isSelected: Boolean,
     onClick: () -> Unit,

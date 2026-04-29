@@ -1,14 +1,9 @@
 package com.example.letssopt.presentation.signin
 
-import android.content.Intent
-import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -19,7 +14,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,62 +23,27 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.core.common.extension.noRippleClickable
 import com.example.letssopt.core.data.AuthPreference
 import com.example.letssopt.core.designsystem.component.SoptBasicButton
 import com.example.letssopt.core.designsystem.component.SoptFormField
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.presentation.main.MainActivity
-import com.example.letssopt.presentation.signup.SignUpActivity
-
-class SignInActivity : ComponentActivity() {
-    private val viewModel by viewModels<SignInViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (AuthPreference.isLoggedIn()) {
-            startMainActivity()
-            return
-        }
-
-        enableEdgeToEdge()
-        setContent {
-            LETSSOPTTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SignInRoute(
-                        modifier = Modifier.padding(innerPadding),
-                        viewModel = viewModel,
-                        navigateToSignUp = {
-                            val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
-                            startActivity(intent)
-                        },
-                        navigateToMain = { startMainActivity() }
-                    )
-                }
-            }
-        }
-    }
-
-    private fun startMainActivity() {
-        val intent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        startActivity(intent)
-        finish()
-    }
-}
 
 @Composable
 fun SignInRoute(
-    viewModel: SignInViewModel,
+    paddingValues: PaddingValues,
+    navigateUp: () -> Unit,
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
     modifier: Modifier = Modifier,
-) {
+    viewModel: SignInViewModel = viewModel(),
+
+    ) {
     val context = LocalContext.current
 
     SignInScreen(
+        paddingValues = paddingValues,
         modifier = modifier,
         onSignUpTextClick = navigateToSignUp,
         onSignInClick = { email, password ->
@@ -103,13 +62,15 @@ fun SignInRoute(
             } else {
                 AuthPreference.setLoggedIn(true)
                 Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
-                navigateToMain()}
+                navigateToMain()
+            }
         }
     )
 }
 
 @Composable
 private fun SignInScreen(
+    paddingValues: PaddingValues,
     onSignUpTextClick: () -> Unit,
     onSignInClick: (String, String) -> Unit,
     modifier: Modifier = Modifier
@@ -123,6 +84,7 @@ private fun SignInScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = LETSSOPTTheme.colors.background)
+            .padding(paddingValues)
             .padding(horizontal = 20.dp)
             .imePadding(),
         horizontalAlignment = Alignment.Start
@@ -172,7 +134,7 @@ private fun SignInScreen(
                 }
             )
         }
-        
+
         Text(
             text = "아직 계정이 없으신가요?  회원가입",
             style = LETSSOPTTheme.typography.regular.caption,
@@ -204,6 +166,7 @@ fun SignInScreenPreview() {
     LETSSOPTTheme {
         SignInScreen(
             onSignUpTextClick = {},
+            paddingValues = PaddingValues(),
             onSignInClick = { _, _ -> }
         )
     }

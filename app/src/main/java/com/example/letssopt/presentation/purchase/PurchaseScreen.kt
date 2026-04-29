@@ -12,7 +12,8 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun PurchaseRoute(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    navigateUp: () -> Unit
 ) {
     PurchaseScreen(
         paddingValues = paddingValues
@@ -20,7 +21,7 @@ fun PurchaseRoute(
 }
 
 @Composable
-fun PurchaseScreen(
+private fun PurchaseScreen(
     paddingValues: PaddingValues
 ) {
     Column (

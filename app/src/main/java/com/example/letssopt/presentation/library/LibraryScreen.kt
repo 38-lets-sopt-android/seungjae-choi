@@ -23,6 +23,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun LibraryRoute(
     paddingValues: PaddingValues,
+    navigateUp: () -> Unit,
     viewModel: LibraryViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -35,7 +36,7 @@ fun LibraryRoute(
 }
 
 @Composable
-fun LibraryScreen(
+private fun LibraryScreen(
     paddingValues: PaddingValues,
     uiState: LibraryUiState,
     onDeleteClick: (Int) -> Unit
