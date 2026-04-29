@@ -18,7 +18,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun LibraryVerticalGrid(
     items: ImmutableList<LibraryUiModel>,
-    onDeleteClick: (Int) -> Unit,
+    onDeleteClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -45,9 +45,9 @@ private fun LibraryVerticalGridPreview() {
     LETSSOPTTheme {
         LibraryVerticalGrid(
             items = listOf(
-                LibraryUiModel(1, R.drawable.img_content1),
-                LibraryUiModel(2, R.drawable.img_content2),
-                LibraryUiModel(3, R.drawable.img_content3),
+                LibraryUiModel(1L, R.drawable.img_content1, "이 사람 통역 되나요"),
+                LibraryUiModel(2L, R.drawable.img_content2, "이상한일5"),
+                LibraryUiModel(3L, R.drawable.img_content3, "하일매리")
             ).toImmutableList(),
             onDeleteClick = {}
         )
