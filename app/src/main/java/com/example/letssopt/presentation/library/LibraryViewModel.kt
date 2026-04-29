@@ -39,8 +39,7 @@ class LibraryViewModel(
 
     fun deleteItem(id: Long) {
         viewModelScope.launch {
-            val entity = libraryDao.getItemById(id) ?: return@launch
-            libraryDao.delete(entity)
+            libraryDao.deleteById(id)
             _sideEffect.emit(LibrarySideEffect.ShowToast("보관함에서 삭제되었습니다."))
         }
     }

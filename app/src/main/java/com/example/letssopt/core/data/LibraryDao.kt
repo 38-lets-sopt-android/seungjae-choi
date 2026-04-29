@@ -1,7 +1,6 @@
 package com.example.letssopt.core.data
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -18,6 +17,6 @@ interface LibraryDao {
     @Query("SELECT * FROM library_table")
     fun getAllItems(): Flow<List<LibraryEntity>>
 
-    @Delete
-    suspend fun delete(libraryEntity: LibraryEntity)
+    @Query("DELETE FROM library_table WHERE id = :id")
+    suspend fun deleteById(id: Long)
 }
