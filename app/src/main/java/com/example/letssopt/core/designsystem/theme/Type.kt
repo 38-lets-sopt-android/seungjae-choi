@@ -37,6 +37,7 @@ sealed interface TypographyTokens {
     @Immutable
     data class Regular(
         val body: TextStyle, // 본문 body
+        val body2: TextStyle, // 본문2 body
         val caption: TextStyle, // 캡션 caption
     )
 }
@@ -91,10 +92,20 @@ val defaultLETSSOPTTypography = LETSSOPTTypography(
             fontFamily = PretendardFont.regular,
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
-            lineHeight = 26.sp,
+            lineHeight = 16.sp,
             letterSpacing = 0.sp,
             platformStyle = TypographyDefaults.platformStyle,
             lineHeightStyle = TypographyDefaults.lineHeightStyle
+        ),
+        body2 = TextStyle(
+            fontFamily = PretendardFont.regular,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp,
+            lineHeight = 12.sp,
+            letterSpacing = 0.sp,
+            platformStyle = TypographyDefaults.platformStyle,
+            lineHeightStyle = TypographyDefaults.lineHeightStyle
+
         ),
         caption = TextStyle(
             fontFamily = PretendardFont.regular,

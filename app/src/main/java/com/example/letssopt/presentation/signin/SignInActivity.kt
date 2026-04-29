@@ -1,4 +1,4 @@
-package com.example.letssopt.presentation
+package com.example.letssopt.presentation.signin
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,9 +22,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,62 +30,57 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.letssopt.core.common.extension.noRippleClickable
-import com.example.letssopt.core.common.util.SoptValidator
+import com.example.letssopt.core.data.AuthPreference
 import com.example.letssopt.core.designsystem.component.SoptBasicButton
 import com.example.letssopt.core.designsystem.component.SoptFormField
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.presentation.main.MainActivity
+import com.example.letssopt.presentation.signup.SignUpActivity
 
 class SignInActivity : ComponentActivity() {
-    private var registeredEmail by mutableStateOf("")
-    private var registeredPassword by mutableStateOf("")
-
-    private val signUpLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            result.data?.let { intent ->
-                registeredEmail = intent.getStringExtra("email") ?: ""
-                registeredPassword = intent.getStringExtra("password") ?: ""
-            }
-        }
-    }
+    private val viewModel by viewModels<SignInViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (AuthPreference.isLoggedIn()) {
+            startMainActivity()
+            return
+        }
+
         enableEdgeToEdge()
         setContent {
             LETSSOPTTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     SignInRoute(
                         modifier = Modifier.padding(innerPadding),
-                        registeredEmail = registeredEmail,
-                        registeredPassword = registeredPassword,
+                        viewModel = viewModel,
                         navigateToSignUp = {
                             val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
-                            signUpLauncher.launch(intent)
-                        },
-                        navigateToMain = {
-                            val intent =
-                                Intent(this@SignInActivity, MainActivity::class.java).apply {
-                                    flags =
-                                        Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                }
                             startActivity(intent)
-                        }
+                        },
+                        navigateToMain = { startMainActivity() }
                     )
                 }
             }
         }
     }
+
+    private fun startMainActivity() {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        finish()
+    }
 }
 
 @Composable
 fun SignInRoute(
-    registeredEmail: String,
-    registeredPassword: String,
+    viewModel: SignInViewModel,
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
@@ -96,16 +88,22 @@ fun SignInRoute(
         modifier = modifier,
         onSignUpTextClick = navigateToSignUp,
         onSignInClick = { email, password ->
-            val errorMessage = SoptValidator.validateSignInInputs(email, password)
+            val storedEmail = AuthPreference.getEmail()
+            val storedPassword = AuthPreference.getPassword()
+
+            val errorMessage = viewModel.validateSignIn(
+                email = email,
+                password = password,
+                storedEmail = storedEmail,
+                storedPassword = storedPassword
+            )
 
             if (errorMessage != null) {
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-            } else if (email != registeredEmail || password != registeredPassword) {
-                Toast.makeText(context, "아이디 또는 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
             } else {
+                AuthPreference.setLoggedIn(true)
                 Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
-                navigateToMain()
-            }
+                navigateToMain()}
         }
     )
 }

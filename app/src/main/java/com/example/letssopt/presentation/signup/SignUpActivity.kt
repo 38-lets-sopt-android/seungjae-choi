@@ -1,4 +1,4 @@
-package com.example.letssopt.presentation
+package com.example.letssopt.presentation.signup
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,12 +29,14 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.letssopt.core.common.util.SoptValidator
+import com.example.letssopt.core.data.AuthPreference
 import com.example.letssopt.core.designsystem.component.SoptBasicButton
 import com.example.letssopt.core.designsystem.component.SoptFormField
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 
 class SignUpActivity : ComponentActivity() {
+    private val viewModel by viewModels<SignUpViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -42,6 +45,7 @@ class SignUpActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     SignUpRoute(
                         modifier = Modifier.padding(innerPadding),
+                        viewModel = viewModel,
                         navigateToSignIn = { email, password ->
                             val intent = Intent().apply {
                                 putExtra("email", email)
@@ -59,6 +63,7 @@ class SignUpActivity : ComponentActivity() {
 
 @Composable
 fun SignUpRoute(
+    viewModel: SignUpViewModel,
     navigateToSignIn: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -67,10 +72,12 @@ fun SignUpRoute(
     SignUpScreen(
         modifier = modifier,
         onSignUpClick = { email, password, passwordCheck ->
-            val errorMessage = SoptValidator.validateSignUpInputs(email, password, passwordCheck)
+            val errorMessage = viewModel.validateSignUp(email, password, passwordCheck)
+
             if (errorMessage != null) {
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             } else {
+                AuthPreference.saveAccount(email, password)
                 Toast.makeText(context, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show()
                 navigateToSignIn(email, password)
             }

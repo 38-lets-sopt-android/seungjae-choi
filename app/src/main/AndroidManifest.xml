@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".presentation.LETSSOPTApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,17 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LETSSOPT">
         <activity
-            android:name=".presentation.SignUpActivity"
+            android:name=".presentation.signup.SignUpActivity"
             android:exported="false"
             android:label="@string/title_activity_sign_up"
             android:theme="@style/Theme.LETSSOPT" />
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.LETSSOPT" />
         <activity
-            android:name=".presentation.SignInActivity"
+            android:name=".presentation.signin.SignInActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.LETSSOPT">
