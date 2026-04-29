@@ -86,14 +86,6 @@ class MainAppState(
         navController.navigate(SignUp)
     }
 
-    fun navigateToSignIn(email: String = "", password: String = "") {
-        navController.previousBackStackEntry?.savedStateHandle?.apply {
-            set("email", email)
-            set("password", password)
-        }
-        navController.navigateUp()
-    }
-
     private val clearStackNavOptions = navOptions {
         popUpTo(0) {
             inclusive = true

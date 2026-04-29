@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,10 +25,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.letssopt.core.data.AuthPreference
 import com.example.letssopt.core.designsystem.component.SoptBasicButton
 import com.example.letssopt.core.designsystem.component.SoptFormField
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.presentation.signup.state.SignUpSideEffect
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SignUpRoute(
@@ -38,20 +40,23 @@ fun SignUpRoute(
     ) {
     val context = LocalContext.current
 
+    LaunchedEffect(viewModel.sideEffect) {
+        viewModel.sideEffect.collectLatest { effect ->
+            when (effect) {
+                is SignUpSideEffect.ShowToast -> {
+                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                }
+                is SignUpSideEffect.NavigateToSignIn -> {
+                    navigateUp()
+                }
+            }
+        }
+    }
+
     SignUpScreen(
         paddingValues = paddingValues,
         modifier = modifier,
-        onSignUpClick = { email, password, passwordCheck ->
-            val errorMessage = viewModel.validateSignUp(email, password, passwordCheck)
-
-            if (errorMessage != null) {
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-            } else {
-                AuthPreference.saveAccount(email, password)
-                Toast.makeText(context, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show()
-                navigateUp()
-            }
-        }
+        onSignUpClick = viewModel::signUp
     )
 }
 

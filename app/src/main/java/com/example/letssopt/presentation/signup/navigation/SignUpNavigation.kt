@@ -22,7 +22,7 @@ fun NavGraphBuilder.signUpGraph(
     composable<SignUp> {
         SignUpRoute(
             paddingValues = paddingValues,
-            navigateUp = navigateUp,
+            navigateUp = navigateUp
         )
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,10 +26,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.core.common.extension.noRippleClickable
-import com.example.letssopt.core.data.AuthPreference
 import com.example.letssopt.core.designsystem.component.SoptBasicButton
 import com.example.letssopt.core.designsystem.component.SoptFormField
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
+import com.example.letssopt.presentation.signin.state.SignInSideEffect
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SignInRoute(
@@ -42,29 +44,27 @@ fun SignInRoute(
     ) {
     val context = LocalContext.current
 
+    LaunchedEffect(viewModel.sideEffect) {
+        viewModel.sideEffect.collectLatest { effect ->
+            when (effect) {
+                is SignInSideEffect.ShowToast -> {
+                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                }
+                is SignInSideEffect.NavigateToMain -> {
+                    navigateToMain()
+                }
+                is SignInSideEffect.NavigateToSignUp -> {
+                    navigateToSignUp()
+                }
+            }
+        }
+    }
+
     SignInScreen(
         paddingValues = paddingValues,
         modifier = modifier,
-        onSignUpTextClick = navigateToSignUp,
-        onSignInClick = { email, password ->
-            val storedEmail = AuthPreference.getEmail()
-            val storedPassword = AuthPreference.getPassword()
-
-            val errorMessage = viewModel.validateSignIn(
-                email = email,
-                password = password,
-                storedEmail = storedEmail,
-                storedPassword = storedPassword
-            )
-
-            if (errorMessage != null) {
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-            } else {
-                AuthPreference.setLoggedIn(true)
-                Toast.makeText(context, "로그인에 성공했습니다", Toast.LENGTH_SHORT).show()
-                navigateToMain()
-            }
-        }
+        onSignUpTextClick = viewModel::onSignUpTextClick,
+        onSignInClick = viewModel::signIn
     )
 }
 
