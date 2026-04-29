@@ -21,7 +21,6 @@ import com.example.letssopt.presentation.home.component.banner.HomeBannerSection
 import com.example.letssopt.presentation.home.component.content.HomeContentSection
 import com.example.letssopt.presentation.home.component.party.HomePartySection
 import com.example.letssopt.presentation.home.state.HomeUiState
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomeRoute(
@@ -97,10 +96,10 @@ private fun HomeScreenPreview() {
         HomeScreen(
             paddingValues = PaddingValues(0.dp),
             uiState = HomeUiState(
-                bannerList = HomeUiState.dummyBannerList.toImmutableList(),
-                hotList = HomeUiState.dummyContentList.toImmutableList(),
-                upcomingList = HomeUiState.dummyContentList.toImmutableList(),
-                partyList = HomeUiState.dummyPartyList.toImmutableList()
+                bannerList = HomeUiState.dummyBannerList,
+                hotList = HomeUiState.dummyContentList,
+                upcomingList = HomeUiState.dummyContentList,
+                partyList = HomeUiState.dummyPartyList
             )
         )
     }

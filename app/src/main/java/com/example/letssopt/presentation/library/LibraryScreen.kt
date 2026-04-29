@@ -24,7 +24,6 @@ import com.example.letssopt.presentation.library.component.LibraryEmptyView
 import com.example.letssopt.presentation.library.component.LibraryVerticalGrid
 import com.example.letssopt.presentation.library.state.LibrarySideEffect
 import com.example.letssopt.presentation.library.state.LibraryUiState
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -97,7 +96,7 @@ private fun LibraryScreenPreview() {
         LibraryScreen(
             paddingValues = PaddingValues(0.dp),
             uiState = LibraryUiState(
-                items = LibraryUiState.dummyItems.toImmutableList()
+                items = LibraryUiState.dummyItems
             ),
             onDeleteClick = {}
         )

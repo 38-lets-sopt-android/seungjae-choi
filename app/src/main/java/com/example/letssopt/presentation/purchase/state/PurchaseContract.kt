@@ -5,6 +5,7 @@ import com.example.letssopt.R
 import com.example.letssopt.presentation.purchase.model.PurchaseUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Immutable
 data class PurchaseUiState(
@@ -17,7 +18,7 @@ data class PurchaseUiState(
             PurchaseUiModel(3L, R.drawable.img_content3, "하일매리"),
             PurchaseUiModel(4L, R.drawable.img_content1, "이 사람 통역 되나요"),
             PurchaseUiModel(5L, R.drawable.img_content2, "이상한일5")
-        )
+        ).toImmutableList()
     }
 }
 
