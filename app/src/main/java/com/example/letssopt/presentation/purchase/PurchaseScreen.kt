@@ -40,7 +40,7 @@ fun PurchaseRoute(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(viewModel.sideEffect) {
+    LaunchedEffect(viewModel) {
         viewModel.sideEffect.collectLatest { effect ->
             when (effect) {
                 is PurchaseSideEffect.ShowToast -> {

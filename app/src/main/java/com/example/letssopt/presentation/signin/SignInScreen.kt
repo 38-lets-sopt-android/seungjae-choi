@@ -44,7 +44,7 @@ fun SignInRoute(
     ) {
     val context = LocalContext.current
 
-    LaunchedEffect(viewModel.sideEffect) {
+    LaunchedEffect(viewModel) {
         viewModel.sideEffect.collectLatest { effect ->
             when (effect) {
                 is SignInSideEffect.ShowToast -> {

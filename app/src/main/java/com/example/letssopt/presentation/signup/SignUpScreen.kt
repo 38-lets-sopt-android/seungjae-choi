@@ -40,7 +40,7 @@ fun SignUpRoute(
     ) {
     val context = LocalContext.current
 
-    LaunchedEffect(viewModel.sideEffect) {
+    LaunchedEffect(viewModel) {
         viewModel.sideEffect.collectLatest { effect ->
             when (effect) {
                 is SignUpSideEffect.ShowToast -> {
