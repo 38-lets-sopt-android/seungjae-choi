@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,7 +23,6 @@ fun SoptContentItem(
 ) {
     Box(
         modifier = modifier
-            .width(100.dp)
             .aspectRatio(2f / 3f)
             .clip(RoundedCornerShape(10.dp))
     ) {
