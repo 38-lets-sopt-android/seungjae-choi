@@ -27,7 +27,7 @@ import com.example.letssopt.presentation.purchase.model.PurchaseUiModel
 @Composable
 fun PurchaseGridItem(
     item: PurchaseUiModel,
-    onPurchaseClick: (Long, Int, String) -> Unit,
+    onPurchaseClick: (PurchaseUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -48,7 +48,7 @@ fun PurchaseGridItem(
                     .size(28.dp)
                     .clip(CircleShape)
                     .background(Color.Black)
-                    .noRippleClickable { onPurchaseClick(item.id, item.imageRes, item.title) },
+                    .noRippleClickable { onPurchaseClick(item) },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -78,7 +78,7 @@ private fun PurchaseGridItemPreview() {
     LETSSOPTTheme {
         PurchaseGridItem(
             item = PurchaseUiModel(1, R.drawable.img_content1, "이 사람 통역 되나요"),
-            onPurchaseClick = { _, _, _ -> }
+            onPurchaseClick = {}
         )
     }
 }

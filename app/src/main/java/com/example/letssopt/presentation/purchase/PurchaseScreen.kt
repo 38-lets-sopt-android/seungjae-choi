@@ -14,12 +14,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.letssopt.core.data.LibraryDatabase
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.presentation.purchase.component.PurchaseVerticalGrid
+import com.example.letssopt.presentation.purchase.model.PurchaseUiModel
 import com.example.letssopt.presentation.purchase.state.PurchaseSideEffect
 import com.example.letssopt.presentation.purchase.state.PurchaseUiState
 import kotlinx.coroutines.flow.collectLatest
@@ -51,8 +53,7 @@ fun PurchaseRoute(
     PurchaseScreen(
         paddingValues = paddingValues,
         uiState = uiState,
-        onPurchaseClick = { id, imageRes, title ->
-            viewModel.onPurchaseClick(id = id, title = title, imageRes = imageRes)        }
+        onPurchaseClick = { viewModel.onPurchaseClick(it) }
     )
 }
 
@@ -60,7 +61,7 @@ fun PurchaseRoute(
 private fun PurchaseScreen(
     paddingValues: PaddingValues,
     uiState: PurchaseUiState,
-    onPurchaseClick: (Long, Int, String) -> Unit
+    onPurchaseClick: (PurchaseUiModel) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -79,6 +80,20 @@ private fun PurchaseScreen(
         PurchaseVerticalGrid(
             items = uiState.items,
             onPurchaseClick = onPurchaseClick
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PurchaseScreenPreview() {
+    LETSSOPTTheme {
+        PurchaseScreen(
+            paddingValues = PaddingValues(0.dp),
+            uiState = PurchaseUiState(
+                items = PurchaseUiState.dummyItems
+            ),
+            onPurchaseClick = {}
         )
     }
 }

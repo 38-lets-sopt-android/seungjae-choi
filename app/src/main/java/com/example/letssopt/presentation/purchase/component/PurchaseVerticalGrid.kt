@@ -18,7 +18,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun PurchaseVerticalGrid(
     items: ImmutableList<PurchaseUiModel>,
-    onPurchaseClick: (Long, Int, String) -> Unit,
+    onPurchaseClick: (PurchaseUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -51,7 +51,7 @@ private fun PurchaseVerticalGridPreview() {
                 PurchaseUiModel(4, R.drawable.img_content1, "이 사람 통역 되나요"),
                 PurchaseUiModel(5, R.drawable.img_content2, "이상한일5")
             ).toImmutableList(),
-            onPurchaseClick = { _, _, _ -> }
+            onPurchaseClick = {}
         )
     }
 }
