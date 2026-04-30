@@ -1,4 +1,4 @@
-package com.example.letssopt.presentation
+package com.example.letssopt
 
 import android.app.Application
 import com.example.letssopt.core.data.AuthPreference
