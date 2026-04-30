@@ -2,7 +2,7 @@ package com.example.letssopt.presentation.home.state
 
 import androidx.compose.runtime.Immutable
 import com.example.letssopt.R
-import com.example.letssopt.presentation.home.model.PartyUiModel
+import com.example.letssopt.presentation.home.model.HomePartyUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -12,7 +12,7 @@ data class HomeUiState(
     val bannerList: ImmutableList<Int> = persistentListOf(),
     val hotList: ImmutableList<Int> = persistentListOf(),
     val upcomingList: ImmutableList<Int> = persistentListOf(),
-    val partyList: ImmutableList<PartyUiModel> = persistentListOf()
+    val partyList: ImmutableList<HomePartyUiModel> = persistentListOf()
 ) {
     companion object {
         val dummyBannerList = listOf(
@@ -29,10 +29,10 @@ data class HomeUiState(
             R.drawable.img_content3,
         ).toImmutableList()
         val dummyPartyList = listOf(
-            PartyUiModel(R.drawable.img_party, "오늘 21:13에 시작", "# 왕과 사는 남자"),
-            PartyUiModel(R.drawable.img_party, "오늘 22:22에 시작", "# 파묘"),
-            PartyUiModel(R.drawable.img_party, "오늘 21:13에 시작", "# 왕과 사는 남자"),
-            PartyUiModel(R.drawable.img_party, "오늘 22:22에 시작", "# 파묘"),
+            HomePartyUiModel(R.drawable.img_party, "오늘 21:13에 시작", "# 왕과 사는 남자"),
+            HomePartyUiModel(R.drawable.img_party, "오늘 22:22에 시작", "# 파묘"),
+            HomePartyUiModel(R.drawable.img_party, "오늘 21:13에 시작", "# 왕과 사는 남자"),
+            HomePartyUiModel(R.drawable.img_party, "오늘 22:22에 시작", "# 파묘"),
         ).toImmutableList()
     }
 }

@@ -14,13 +14,13 @@ import androidx.compose.ui.unit.dp
 import com.example.letssopt.R
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.presentation.home.component.HomeSectionHeader
-import com.example.letssopt.presentation.home.model.PartyUiModel
+import com.example.letssopt.presentation.home.model.HomePartyUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomePartySection(
-    partyList: ImmutableList<PartyUiModel>,
+    partyList: ImmutableList<HomePartyUiModel>,
     modifier: Modifier = Modifier,
     showMore: Boolean = false,
     onMoreClick: () -> Unit = {}
@@ -56,7 +56,7 @@ private fun HomePartySectionPreview() {
     LETSSOPTTheme {
         HomePartySection(
             partyList = listOf(
-                PartyUiModel(
+                HomePartyUiModel(
                     imageRes = R.drawable.img_party,
                     startTime = "오늘 21:13에 시작",
                     tag = "# 왕과 사는 남자"

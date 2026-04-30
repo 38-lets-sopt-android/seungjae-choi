@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
 
 @Immutable
-data class PartyUiModel(
+data class HomePartyUiModel(
     @param:DrawableRes val imageRes: Int,
     val startTime: String,
     val tag: String
