@@ -1,4 +1,4 @@
-package com.example.letssopt.presentation.library.component
+package com.example.letssopt.presentation.purchase.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,29 +11,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.letssopt.R
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.presentation.library.model.LibraryUiModel
+import com.example.letssopt.presentation.purchase.model.PurchaseUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun LibraryVerticalGrid(
-    items: ImmutableList<LibraryUiModel>,
-    onDeleteClick: (Long) -> Unit,
+fun PurchaseVerticalGrid(
+    items: ImmutableList<PurchaseUiModel>,
+    onPurchaseClick: (PurchaseUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         items(
             items = items,
             key = { it.id }
         ) { item ->
-            LibraryGridItem(
+            PurchaseGridItem(
                 item = item,
-                onDeleteClick = onDeleteClick
+                onPurchaseClick = onPurchaseClick
             )
         }
     }
@@ -41,15 +41,17 @@ fun LibraryVerticalGrid(
 
 @Preview
 @Composable
-private fun LibraryVerticalGridPreview() {
+private fun PurchaseVerticalGridPreview() {
     LETSSOPTTheme {
-        LibraryVerticalGrid(
+        PurchaseVerticalGrid(
             items = listOf(
-                LibraryUiModel(1L, R.drawable.img_content1, "이 사람 통역 되나요"),
-                LibraryUiModel(2L, R.drawable.img_content2, "이상한일5"),
-                LibraryUiModel(3L, R.drawable.img_content3, "하일매리")
+                PurchaseUiModel(1, R.drawable.img_content1, "이 사람 통역 되나요"),
+                PurchaseUiModel(2, R.drawable.img_content2, "이상한일5"),
+                PurchaseUiModel(3, R.drawable.img_content3, "하일매리"),
+                PurchaseUiModel(4, R.drawable.img_content1, "이 사람 통역 되나요"),
+                PurchaseUiModel(5, R.drawable.img_content2, "이상한일5")
             ).toImmutableList(),
-            onDeleteClick = {}
+            onPurchaseClick = {}
         )
     }
 }

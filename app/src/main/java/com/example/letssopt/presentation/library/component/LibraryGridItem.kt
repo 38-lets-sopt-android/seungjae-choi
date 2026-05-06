@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +26,7 @@ import com.example.letssopt.presentation.library.model.LibraryUiModel
 @Composable
 fun LibraryGridItem(
     item: LibraryUiModel,
-    onDeleteClick: (Int) -> Unit,
+    onDeleteClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -35,9 +36,19 @@ fun LibraryGridItem(
     ) {
         SoptContentItem(imageRes = item.imageRes)
 
+        Text(
+            text = item.title,
+            style = LETSSOPTTheme.typography.regular.body,
+            color = LETSSOPTTheme.colors.textPrimary,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(top = 6.dp),
+            maxLines = 2
+        )
+
         Box(
             modifier = Modifier
-                .padding(top = 12.dp)
+                .padding(top = 8.dp)
                 .size(24.dp)
                 .clip(CircleShape)
                 .background(LETSSOPTTheme.colors.textPrimary)
@@ -58,7 +69,7 @@ fun LibraryGridItem(
 private fun LibraryGridItemPreview() {
     LETSSOPTTheme {
         LibraryGridItem(
-            item = LibraryUiModel(1, R.drawable.img_content1),
+            item = LibraryUiModel(1, R.drawable.img_content1, "이 사람 통역 되나요"),
             onDeleteClick = {}
         )
     }

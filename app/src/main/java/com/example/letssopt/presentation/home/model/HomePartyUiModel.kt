@@ -1,11 +1,11 @@
-package com.example.letssopt.presentation.library.model
+package com.example.letssopt.presentation.home.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
 
 @Immutable
-data class LibraryUiModel(
-    val id: Long,
+data class HomePartyUiModel(
     @param:DrawableRes val imageRes: Int,
-    val title: String
+    val startTime: String,
+    val tag: String
 )

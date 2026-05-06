@@ -12,7 +12,8 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun WebtoonRoute(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    navigateUp: () -> Unit
 ) {
     WebtoonScreen(
         paddingValues = paddingValues
@@ -20,7 +21,7 @@ fun WebtoonRoute(
 }
 
 @Composable
-fun WebtoonScreen(
+private fun WebtoonScreen(
     paddingValues: PaddingValues
 ) {
     Column (

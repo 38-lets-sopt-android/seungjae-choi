@@ -12,7 +12,8 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun SearchRoute(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    navigateUp: () -> Unit
 ) {
     SearchScreen(
         paddingValues = paddingValues
@@ -20,8 +21,8 @@ fun SearchRoute(
 }
 
 @Composable
-fun SearchScreen(
-    paddingValues: PaddingValues
+private fun SearchScreen(
+    paddingValues: PaddingValues,
 ) {
     Column (
         modifier = Modifier

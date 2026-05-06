@@ -1,11 +1,11 @@
-package com.example.letssopt.presentation.home.model
+package com.example.letssopt.presentation.purchase.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
 
 @Immutable
-data class PartyUiModel(
+data class PurchaseUiModel(
+    val id: Long,
     @param:DrawableRes val imageRes: Int,
-    val startTime: String,
-    val tag: String
+    val title: String
 )

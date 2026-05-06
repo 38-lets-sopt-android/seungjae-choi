@@ -24,11 +24,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.letssopt.R
 import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
-import com.example.letssopt.presentation.home.model.PartyUiModel
+import com.example.letssopt.presentation.home.model.HomePartyUiModel
 
 @Composable
 fun HomePartyItem(
-    item: PartyUiModel,
+    item: HomePartyUiModel,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.width(196.dp)) {
@@ -86,7 +86,7 @@ fun HomePartyItem(
 private fun HomePartyItemPreview() {
     LETSSOPTTheme {
         HomePartyItem(
-            item = PartyUiModel(
+            item = HomePartyUiModel(
                 imageRes = R.drawable.img_party,
                 startTime = "오늘 21:13에 시작",
                 tag = "# 왕과 사는 남자"
