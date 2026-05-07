@@ -53,11 +53,12 @@ class SignInViewModel : ViewModel() {
             )
 
             authRepository.signIn(request)
-                .onSuccess {
+                .onSuccess { response ->
                     _uiState.value = UiState.Success(Unit)
 
                     AuthPreference.setLoggedIn(true)
                     AuthPreference.saveAccount(email = request.loginId, password = request.password)
+                    AuthPreference.saveUserId(response.userId)
 
                     _sideEffect.emit(SignInSideEffect.ShowToast("로그인에 성공했습니다."))
                     _sideEffect.emit(SignInSideEffect.NavigateToMain)

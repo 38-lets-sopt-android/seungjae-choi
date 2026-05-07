@@ -8,6 +8,7 @@ object AuthPreference {
     private const val PREF_NAME = "auth_pref"
     private const val KEY_EMAIL = "email"
     private const val KEY_PASSWORD = "password"
+    private const val KEY_USER_ID = "user_id"
     private const val KEY_IS_LOGGED_IN = "is_logged_in"
 
     private lateinit var prefs: SharedPreferences
@@ -25,9 +26,11 @@ object AuthPreference {
         }
     }
 
-    fun getEmail(): String = prefs.getString(KEY_EMAIL, "") ?: ""
+    fun saveUserId(id: Long) {
+        prefs.edit { putLong(KEY_USER_ID, id) }
+    }
 
-    fun getPassword(): String = prefs.getString(KEY_PASSWORD, "") ?: ""
+    fun getUserId(): Long = prefs.getLong(KEY_USER_ID, -1L)
 
     fun setLoggedIn(isLoggedIn: Boolean) {
         prefs.edit {
