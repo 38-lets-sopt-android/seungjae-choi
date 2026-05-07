@@ -2,6 +2,7 @@ package com.example.letssopt.core.network
 
 import com.example.letssopt.BuildConfig
 import com.example.letssopt.data.auth.remote.api.AuthService
+import com.example.letssopt.data.user.remote.api.UserService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -32,4 +33,5 @@ object RetrofitClient {
         .build()
 
     val authService: AuthService = instance.create(AuthService::class.java)
+    val userService: UserService = instance.create(UserService::class.java)
 }
