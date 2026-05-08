@@ -18,6 +18,7 @@ import com.example.letssopt.core.designsystem.theme.LETSSOPTTheme
 import com.example.letssopt.presentation.home.navigation.homeGraph
 import com.example.letssopt.presentation.library.navigation.libraryGraph
 import com.example.letssopt.presentation.main.component.MainBottomBar
+import com.example.letssopt.presentation.profile.navigation.profileGraph
 import com.example.letssopt.presentation.purchase.navigation.purchaseGraph
 import com.example.letssopt.presentation.search.navigation.searchGraph
 import com.example.letssopt.presentation.signin.navigation.signInGraph
@@ -48,7 +49,9 @@ fun MainScreen(
         },
         topBar = {
             when (currentTab) {
-                MainTab.MAIN -> SoptTopBar()
+                MainTab.MAIN -> SoptTopBar(
+                    onProfileClick = appState::navigateToProfile
+                )
                 else -> {}
             }
         },
@@ -94,22 +97,32 @@ fun MainScreen(
                 navigateUp = appState::navigateUp,
             )
 
+            profileGraph(
+                paddingValues = innerPadding,
+                navController = appState.navController,
+                navigateUp = appState::navigateUp
+            )
+
             homeGraph(
                 paddingValues = innerPadding,
                 navigateUp = appState::navigateUp
             )
+
             purchaseGraph(
                 paddingValues = innerPadding,
                 navigateUp = appState::navigateUp
             )
+
             webtoonGraph(
                 paddingValues = innerPadding,
                 navigateUp = appState::navigateUp
             )
+
             searchGraph(
                 paddingValues = innerPadding,
                 navigateUp = appState::navigateUp
             )
+
             libraryGraph(
                 paddingValues = innerPadding,
                 navigateUp = appState::navigateUp

@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.example.letssopt.core.data.AuthPreference
 import com.example.letssopt.presentation.home.navigation.Home
+import com.example.letssopt.presentation.profile.navigation.ProfileGraph
 import com.example.letssopt.presentation.signin.navigation.SignIn
 import com.example.letssopt.presentation.signup.navigation.SignUp
 import kotlinx.coroutines.CoroutineScope
@@ -84,6 +85,10 @@ class MainAppState(
 
     fun navigateToSignUp() {
         navController.navigate(SignUp)
+    }
+
+    fun navigateToProfile() {
+        navController.navigate(ProfileGraph)
     }
 
     private val clearStackNavOptions = navOptions {
