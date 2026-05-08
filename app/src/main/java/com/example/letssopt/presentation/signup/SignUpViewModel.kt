@@ -52,7 +52,7 @@ class SignUpViewModel : ViewModel() {
             }
             .onFailure { exception ->
                 val message = exception.message ?: "회원가입에 실패했습니다."
-                _uiState.value = UiState.Failure
+                _uiState.value = UiState.Loading
                 _sideEffect.emit(SignUpSideEffect.ShowToast(message))
             }
     }

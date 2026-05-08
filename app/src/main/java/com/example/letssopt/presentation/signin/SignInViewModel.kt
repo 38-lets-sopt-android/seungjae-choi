@@ -64,7 +64,7 @@ class SignInViewModel : ViewModel() {
                     _sideEffect.emit(SignInSideEffect.NavigateToMain)
                 }
                 .onFailure { exception ->
-                    _uiState.value = UiState.Failure
+                    _uiState.value = UiState.Loading
                     _sideEffect.emit(
                         SignInSideEffect.ShowToast(exception.message ?: "로그인에 실패했습니다.")
                     )
