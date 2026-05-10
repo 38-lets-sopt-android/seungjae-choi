@@ -2,6 +2,7 @@ package com.example.letssopt.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.letssopt.core.common.extension.parseError
 import com.example.letssopt.core.common.util.UiState
 import com.example.letssopt.core.data.AuthPreference
 import com.example.letssopt.core.network.RetrofitClient
@@ -60,8 +61,8 @@ class ProfileViewModel : ViewModel() {
                 }
                 .onFailure { exception ->
                     _uiState.update { UiState.Loading }
-                    _sideEffect.emit(ProfileSideEffect.ShowToast("프로필 조회 실패: ${exception.message}"))
-                }
+                    val errorMessage = exception.parseError("프로필 조회 실패")
+                    _sideEffect.emit(ProfileSideEffect.ShowToast(errorMessage))                }
         }
     }
 
@@ -82,8 +83,8 @@ class ProfileViewModel : ViewModel() {
                     }
                 }
                 .onFailure { exception ->
-                    _uiState.update { UiState.Loading }
-                    _sideEffect.emit(ProfileSideEffect.ShowToast("유저 목록 조회 실패: ${exception.message}"))
+                    val errorMessage = exception.parseError("유저 목록 조회 실패")
+                    _sideEffect.emit(ProfileSideEffect.ShowToast(errorMessage))
                 }
         }
     }

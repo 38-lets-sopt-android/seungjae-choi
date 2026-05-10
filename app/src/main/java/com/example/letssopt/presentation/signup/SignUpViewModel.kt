@@ -2,6 +2,7 @@ package com.example.letssopt.presentation.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.letssopt.core.common.extension.parseError
 import com.example.letssopt.core.common.util.UiState
 import com.example.letssopt.core.network.RetrofitClient
 import com.example.letssopt.data.auth.model.SignUpModel
@@ -51,9 +52,8 @@ class SignUpViewModel : ViewModel() {
                 _sideEffect.emit(SignUpSideEffect.NavigateToSignIn)
             }
             .onFailure { exception ->
-                val message = exception.message ?: "회원가입에 실패했습니다."
-                _uiState.value = UiState.Loading
-                _sideEffect.emit(SignUpSideEffect.ShowToast(message))
-            }
+                _uiState.value = UiState.Empty
+                val errorMessage = exception.parseError("회원가입에 실패했습니다.")
+                _sideEffect.emit(SignUpSideEffect.ShowToast(errorMessage))            }
     }
 }

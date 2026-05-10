@@ -2,6 +2,7 @@ package com.example.letssopt.presentation.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.letssopt.core.common.extension.parseError
 import com.example.letssopt.core.common.util.UiState
 import com.example.letssopt.core.data.AuthPreference
 import com.example.letssopt.core.network.RetrofitClient
@@ -64,10 +65,9 @@ class SignInViewModel : ViewModel() {
                     _sideEffect.emit(SignInSideEffect.NavigateToMain)
                 }
                 .onFailure { exception ->
-                    _uiState.value = UiState.Loading
-                    _sideEffect.emit(
-                        SignInSideEffect.ShowToast(exception.message ?: "로그인에 실패했습니다.")
-                    )
+                    _uiState.value = UiState.Empty
+                    val errorMessage = exception.parseError("로그인에 실패했습니다.")
+                    _sideEffect.emit(SignInSideEffect.ShowToast(errorMessage))
                 }
         }
     }

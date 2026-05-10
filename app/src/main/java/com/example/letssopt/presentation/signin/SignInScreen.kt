@@ -45,7 +45,6 @@ fun SignInRoute(
     navigateUp: () -> Unit,
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit,
-    modifier: Modifier = Modifier,
     viewModel: SignInViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -56,36 +55,25 @@ fun SignInRoute(
             when (effect) {
                 is SignInSideEffect.ShowToast ->
                     Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+
                 is SignInSideEffect.NavigateToMain -> navigateToMain()
                 is SignInSideEffect.NavigateToSignUp -> navigateToSignUp()
             }
         }
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
-        SignInScreen(
-            paddingValues = paddingValues,
-            modifier = modifier,
-            onSignUpTextClick = viewModel::onSignUpTextClick,
-            onSignInClick = viewModel::signIn
-        )
-
-        if (uiState is UiState.Loading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = LETSSOPTTheme.colors.background.copy(alpha = 0.3f)),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(color = LETSSOPTTheme.colors.primaryRed)
-            }
-        }
-    }
+    SignInScreen(
+        paddingValues = paddingValues,
+        isLoading = uiState is UiState.Loading,
+        onSignUpTextClick = viewModel::onSignUpTextClick,
+        onSignInClick = viewModel::signIn
+    )
 }
 
 @Composable
 private fun SignInScreen(
     paddingValues: PaddingValues,
+    isLoading: Boolean,
     onSignUpTextClick: () -> Unit,
     onSignInClick: (SignInUiModel) -> Unit,
     modifier: Modifier = Modifier
@@ -95,86 +83,98 @@ private fun SignInScreen(
     val loginIdState = rememberTextFieldState("")
     val passwordState = rememberTextFieldState("")
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = LETSSOPTTheme.colors.background)
-            .padding(paddingValues)
-            .padding(horizontal = 20.dp)
-            .imePadding(),
-        horizontalAlignment = Alignment.Start
-    ) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
+                .fillMaxSize()
+                .background(color = LETSSOPTTheme.colors.background)
+                .padding(paddingValues)
+                .padding(horizontal = 20.dp)
+                .imePadding(),
+            horizontalAlignment = Alignment.Start
         ) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Text(
+                    text = "watcha",
+                    style = LETSSOPTTheme.typography.bold.l1,
+                    color = LETSSOPTTheme.colors.primaryRed,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 60.dp)
+                )
+
+                Spacer(modifier = Modifier.height(26.dp))
+
+                Text(
+                    text = "이메일로 로그인",
+                    style = LETSSOPTTheme.typography.bold.h2,
+                    color = LETSSOPTTheme.colors.textPrimary
+                )
+
+                Spacer(modifier = Modifier.height(36.dp))
+
+                SoptFormField(
+                    title = "아이디",
+                    state = loginIdState,
+                    placeholder = "아이디를 입력하세요",
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                )
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                SoptFormField(
+                    title = "비밀번호",
+                    state = passwordState,
+                    placeholder = "비밀번호를 입력하세요",
+                    isPassword = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    onKeyboardAction = KeyboardActionHandler { performDefault ->
+                        performDefault()
+                        focusManager.clearFocus()
+                    }
+                )
+            }
+
             Text(
-                text = "watcha",
-                style = LETSSOPTTheme.typography.bold.l1,
-                color = LETSSOPTTheme.colors.primaryRed,
+                text = "아직 계정이 없으신가요?  회원가입",
+                style = LETSSOPTTheme.typography.regular.caption,
+                color = LETSSOPTTheme.colors.textSecondary,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(top = 60.dp)
+                    .padding(bottom = 20.dp)
+                    .noRippleClickable(onClick = onSignUpTextClick)
             )
 
-            Spacer(modifier = Modifier.height(26.dp))
-
-            Text(
-                text = "이메일로 로그인",
-                style = LETSSOPTTheme.typography.bold.h2,
-                color = LETSSOPTTheme.colors.textPrimary
-            )
-
-            Spacer(modifier = Modifier.height(36.dp))
-
-            SoptFormField(
-                title = "아이디",
-                state = loginIdState,
-                placeholder = "아이디를 입력하세요",
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-            )
-
-            Spacer(modifier = Modifier.height(18.dp))
-
-            SoptFormField(
-                title = "비밀번호",
-                state = passwordState,
-                placeholder = "비밀번호를 입력하세요",
-                isPassword = true,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                onKeyboardAction = KeyboardActionHandler { performDefault ->
-                    performDefault()
+            SoptBasicButton(
+                title = "로그인하기",
+                onClick = {
                     focusManager.clearFocus()
-                }
+                    onSignInClick(
+                        SignInUiModel(
+                            loginId = loginIdState.text.toString(),
+                            password = passwordState.text.toString()
+                        )
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 26.dp)
             )
         }
-
-        Text(
-            text = "아직 계정이 없으신가요?  회원가입",
-            style = LETSSOPTTheme.typography.regular.caption,
-            color = LETSSOPTTheme.colors.textSecondary,
+    }
+    if (isLoading) {
+        Box(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 20.dp)
-                .noRippleClickable(onClick = onSignUpTextClick)
-        )
-
-        SoptBasicButton(
-            title = "로그인하기",
-            onClick = {
-                focusManager.clearFocus()
-                onSignInClick(
-                    SignInUiModel(
-                        loginId = loginIdState.text.toString(),
-                        password = passwordState.text.toString()
-                    )
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 26.dp)
-        )
+                .fillMaxSize()
+                .background(color = LETSSOPTTheme.colors.background.copy(alpha = 0.3f)),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(color = LETSSOPTTheme.colors.primaryRed)
+        }
     }
 }
 
@@ -184,6 +184,7 @@ private fun SignInScreenPreview() {
     LETSSOPTTheme {
         SignInScreen(
             paddingValues = PaddingValues(),
+            isLoading = false,
             onSignUpTextClick = {},
             onSignInClick = {}
         )
